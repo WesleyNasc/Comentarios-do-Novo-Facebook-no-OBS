@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>OBS data loader</title>
+	<style>
+		*,
+		*:before,
+		*:after {
+			box-sizing: border-box
+		}
+
+		body {
+			font: normal 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+			;
+			background: #3a393a;
+			color: #000;
+			padding: 1em;
+			-webkit-font-smoothing: subpixel-antialiased;
+		}
+
+		button {
+			font-family: sans-serif;
+			font-size: 1em;
+			text-transform: ;
+			border: none;
+			line-height: 1;
+			padding: .5em 1em;
+			margin: 1em 1em 1em 0;
+			border-radius: 0.2em
+			
+		}
+
+		button.dark {
+			background: #242425;
+			color: #DCDCDC;
+		}
+		
+		.op {
+			opacity: 0.8;
+		}
+		
+		.btnop {
+				opacity: 0.9;
+		}
+		
+		button:hover {
+			background-color: #363636;
+			color: #fff
+		}
+
+		img {
+			margin-right: 1em
+		}
+
+		.img-btn {
+			padding: .5em
+		}
+
+		button.img-btn:hover {
+			background: #7b7b7b
+		}
+
+		.img-btn img {
+			height: 1.5em;
+			margin: 0
+		}
+
+		#allData {
+			width: 100%
+		}
+
+		#data_from_clipboard {
+			display: none
+		}
+
+		.output_preview {
+			padding: .32em;
+			background: #dbdbdc;
+			border-radius: .5em;
+		}
+
+		#input-data {
+			padding: 1em;
+			border-radius: .5em;
+		}
+
+		#data_from_clipboard {
+			width: 100%
+		}
+
+		.output_preview>*:empty {
+			display: none
+		}
+
+		#type {
+			background: #363636;
+			color: #ffffff;
+			padding: .25em;
+			border-radius: .25em;
+			margin-bottom: .5em;
+			text-transform: uppercase
+		}
+	</style>
+
+</head>
+
+<body>
+	<div class="panel_input">
+		<textarea class="op" id="allData" onClick="clearTextarea()"></textarea>
+		<div id="data_from_clipboard"></div>
+
+		<button class="btnop" id="btn-load" onClick="load_from_clipboard()">Carregar  Comentário </button>
+		<button class="btnop" id="btn-show_1" onClick="send('show', 'template-1', 'content')">Mostrar (Design 1)</button>
+		<button class="btnop" id="btn-hide" onClick="send('hide', 'template-0', 'content')">Esconder Comentário</button>
+		<button class="btnop" id="btn-show_2" onClick="send('show', 'template-2', 'content')">Mostrar (Design 2)</button>
+		
+		<br>
+		<button class="img-btn" id="btn-smile" onClick="send_icon('icon', 'smile', 'show')"><img
+				src="images/smile.png"></button>
+		<button class="img-btn" id="btn-heart" onClick="send_icon('icon', 'heart', 'show')"><img
+				src="images/heart.png"></button>
+		<button class="img-btn" id="btn-ok" onClick="send_icon('icon', 'ok', 'show')"><img src="images/ok.png"></button>
+		<button class="img-btn" id="btn-like" onClick="send_icon('icon', 'like', 'show')"><img
+				src="images/like.png"></button>
+		<button class="img-btn" id="btn-wrong" onClick="send_icon('icon', 'wrong', 'show')"><img
+				src="images/wrong.png"></button>
+
+
+	</div>
+
+		<button class="btnop dark" id="btn-reload" onClick="reload()">Limpar</button>
+
+	<div class="op output_preview">
+		<div id="type"></div>
+		<div id="image"></div>
+		<div id="name_surname"></div>
+		<div id="context"></div>
+		<div id="hostname"> </div>
+		<div id="href"></div>
+	</div>
+
+	
+
+	<script>
+		function load_from_clipboard() {
+
+			/*clearing DIVs*/
+			document.getElementById("type").innerHTML = "";
+			document.getElementById("image").innerHTML = "";
+			document.getElementById("name_surname").innerHTML = "";
+			document.getElementById("context").innerHTML = "";
+			document.getElementById("hostname").innerHTML = "";
+			document.getElementById("href").innerHTML = "";
+
+			/*resetting data*/
+			type = '';
+			image = '';
+			name_surname = '';
+			content = '';
+			hostname = '';
+			href = '';
+			status = '';
+			template = '';
+			template_host = '';
+
+			icon_smile = 'hidden';
+			icon_heart = 'hidden';
+			icon_ok = 'hidden';
+			icon_like = 'hidden';
+			icon_wrong = 'hidden';
+
+			/*loading data*/
+
+			allData = document.getElementById("allData").value;
+			data_from_clipboard = allData.split("|");
+			type = data_from_clipboard[0]; console.log("Type: " + type);
+			hostname = data_from_clipboard[1]; console.log("Hostname: " + hostname);
+			href = data_from_clipboard[2];; console.log("Type of data: " + type);
+			document.getElementById("data_from_clipboard").innerHTML = data_from_clipboard[3];
+			switch (hostname) {
+
+				default: console.log("Unknown data"); break;
+
+				case ("www.facebook.com"):
+					{
+						if (type == "live video comment") {
+							console.log('comment');
+							imgsrc = document.getElementsByClassName('pzggbiyp')[0].src;
+							content = document.getElementsByClassName('d2edcug0 hpfvmrgz qv66sw1b c1et5uql rrkovp55 a8c37x1j keod5gw0 nxhoafnm aigsh9s9 d3f4x2em fe6kdd0r mau55g9w c8b282yb iv3no6db jq4qci2q a3bd9o3v knj5qynh oo9gr5id')[0].innerHTML;
+							name_surname = document.getElementsByClassName('d2edcug0 hpfvmrgz qv66sw1b c1et5uql rrkovp55 a8c37x1j keod5gw0 nxhoafnm aigsh9s9 d9wwppkn fe6kdd0r mau55g9w c8b282yb mdeji52x e9vueds3 j5wam9gi lrazzd5p oo9gr5id')[0].innerHTML;
+							template_host = "facebook";
+							document.getElementById("type").innerHTML = type + " from " + template_host;
+							document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+							document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+							document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+							document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+							document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+						}
+						if (type == "live video comment - single video") {
+							console.log('live');
+							imgsrc = document.querySelector('.UFIActorImage').src; console.log('imgsrc= ' + imgsrc);
+							name_surname = document.querySelector('.UFICommentActorName').innerHTML; console.log('name_surname: ' + name_surname);
+							content = document.querySelector(".UFICommentBody").innerHTML; console.log('content: ' + content);
+							template_host = "facebook";
+							document.getElementById("type").innerHTML = type + " from " + template_host;
+							document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+							document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+							document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+							document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+							document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+						}
+					}
+					; break;
+
+				case ("business.facebook.com"):
+					{
+						if (type == "live studio") {
+							console.log('comment');
+							imgsrc = document.getElementsByClassName('eilxjnvf')[0].src;
+							name_surname = document.getElementsByClassName('k06l8y71 n79y2aft ejyk1cqi f8v8iyo9 tvvsncc5 in16kwyi hnua90e3')[0].innerHTML;
+							content = document.getElementsByClassName('fl7lbwl3')[0].innerHTML;
+							template_host = "facebook";
+							document.getElementById("type").innerHTML = type + " from " + template_host;
+							document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+							document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+							document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+							document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+							document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+						}
+
+					}
+					; break;
+
+				case ("www.youtube.com"):
+					{
+						imgsrc = document.getElementById('img').src;
+						name_surname = strip_html_tags(document.getElementById("author-text").innerHTML);
+						content = strip_html_tags(document.querySelector("yt-formatted-string#content-text").innerHTML);
+						template_host = "youtube";
+						document.getElementById("type").innerHTML = type + ' from ' + template_host;
+						document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+						document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+						document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+						document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+						document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+					}; break;
+
+				case ("twitter.com"):
+					{
+						imgsrc = "";
+						name_surname = strip_html_tags(document.querySelector(".css-901oao.css-bfa6kz.r-1re7ezh.r-18u37iz.r-1qd0xha.r-a023e6.r-16dba41.r-ad9z0x.r-bcqeeo.r-qvutc0").innerHTML);
+						content = "content";
+						template_host = "twitter";
+						document.getElementById("type").innerHTML = type + ' from ' + template_host;
+						document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+						document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+						document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+						document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+						document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+					}; break;
+			}
+
+		}
+
+
+		function readClipboard() {
+			navigator.clipboard.readText().then(
+				clipText => document.getElementById("loaded_data").innerText = clipText);
+		}
+
+		var bc_fb = new BroadcastChannel('obs-exchange-data');
+
+		function send(status, template, type_of_data) {
+			data_to_send = [type_of_data, name_surname, content, imgsrc, hostname, href, status, template, template_host].join("|");
+			bc_fb.postMessage(data_to_send);
+		}
+
+
+		function send_icon(type_of_data, icon, status) {
+			data_to_send = [type_of_data, icon, status].join("|")
+			bc_fb.postMessage(data_to_send);
+		}
+
+		function reload() {
+			location.reload()
+		}
+
+		function strip_html_tags(str) {
+			if ((str === null) || (str === ''))
+				return false;
+			else
+				str = str.toString();
+			return str.replace(/<[^>]*>/g, '');
+		}
+
+		function clearTextarea() {
+			document.getElementById("allData").value = "";
+		}
+	</script>
+</body>
+
+</html>
