@@ -1,4 +1,14 @@
-UPDATE 2020+06-30: Now you can load comments from facebook live. Replace "dock.html" file and code injected into facebook page (from file "paste into 'CSS and Javascript Injection' on Facebook page.txt").
+UPDATE 2020/11/11: (p.s. Wesley Nascimento) Agora você pode utilizar o código na Nova Versão do Facebook, tanto para os videos ao vivo de Pessoas e Páginas, quanto diretamente do Painel da sua própria Live. 
+Obs.: 
+
+- O código apensa apresenta as funcionalidades para Lives do Facebook.
+- O código não está carregando fotos no momento.
+
+# Essa atualização é um garfo do código mestre do StudioKrause, ao qual deixo todos os créditos.
+
+---
+
+UPDATE 2020+06-30: Now you can load comments from facebook live. Replace "dock.html" file and code injected into facebook page (from file "paste into 'CSS and Javascript Injection' on Facebook page.txt"
 
 ---
 
